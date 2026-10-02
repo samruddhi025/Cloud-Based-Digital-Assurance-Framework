@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shared With Me - Cloud Assurance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        .header {
+            background: #172b4d;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .file-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .file-name {
+            font-size: 21px;
+            font-weight: bold;
+            color: #172b4d;
+            margin-bottom: 12px;
+        }
+
+        .info {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .permission {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #e8f5e9;
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .action {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 8px;
+            padding: 9px 15px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            background: #0d6efd;
+        }
+
+        .edit {
+            background: #fd7e14;
+        }
+
+        .history {
+            background: #6f42c1;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>☁️ Cloud Assurance</h1>
+
+    <div>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/files">My Files</a>
+        <a href="/logs">Audit Logs</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <h2>🤝 Shared With Me</h2>
+
+    <p>
+        Files shared with your account by other users.
+    </p>
+
+
+    {% if files %}
+
+        {% for file in files %}
+
+        <div class="file-card">
+
+            <div class="file-name">
+                📄 {{ file["filename"] }}
+            </div>
+
+            <div class="info">
+                👤 Owner:
+                <strong>{{ file["owner_username"] }}</strong>
+            </div>
+
+            <div class="info">
+                🔐 Permission:
+                <span class="permission">
+                    {{ file["permission"] }}
+                </span>
+            </div>
+
+            <div class="info">
+                🕒 Last Updated:
+                {{ file["upload_time"] }}
+            </div>
+
+
+            {% if file["permission"] == "edit" %}
+
+            <a class="action edit"
+               href="/edit/{{ file['id'] }}">
+                ✏️ Edit File
+            </a>
+
+            {% endif %}
+
+
+            <a class="action"
+               href="/download/{{ file['filename'] }}">
+                ⬇️ Download
+            </a>
+
+
+            <a class="action history"
+               href="/history/{{ file['filename'] }}">
+                📚 Version History
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>📂 No Shared Files</h3>
+
+            <p>
+                No files have been shared with you yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

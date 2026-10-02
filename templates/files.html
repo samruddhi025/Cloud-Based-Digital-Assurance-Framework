@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Files - Cloud Assurance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        .header {
+            background: #172b4d;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .upload-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .upload-box input {
+            margin: 10px 0;
+        }
+
+        .upload-btn {
+            border: none;
+            background: #172b4d;
+            color: white;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .file-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #172b4d;
+            margin-bottom: 12px;
+        }
+
+        .info {
+            margin: 7px 0;
+            color: #555;
+        }
+
+        .hash {
+            font-family: monospace;
+            font-size: 12px;
+            background: #f1f3f5;
+            padding: 10px;
+            border-radius: 6px;
+            word-break: break-all;
+            margin-top: 8px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .action {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .verify {
+            background: #0d6efd;
+        }
+
+        .history {
+            background: #6f42c1;
+        }
+
+        .download {
+            background: #198754;
+        }
+
+        .delete {
+            background: #dc3545;
+        }
+
+        .share-section {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #ddd;
+        }
+
+        .share-section h4 {
+            margin: 0 0 10px;
+            color: #172b4d;
+        }
+
+        .share-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .share-form input,
+        .share-form select {
+            padding: 9px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .share-btn {
+            border: none;
+            background: #198754;
+            color: white;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>☁️ Cloud Assurance</h1>
+
+    <div>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/shared">Shared With Me</a>
+        <a href="/logs">Audit Logs</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <h2>📁 My Files</h2>
+
+
+    <div class="upload-box">
+
+        <h3>Upload New File</h3>
+
+        <form action="/upload"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <input type="file"
+                   name="file"
+                   required>
+
+            <br>
+
+            <button class="upload-btn"
+                    type="submit">
+
+                ⬆️ Upload File
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if files %}
+
+        {% for file in files %}
+
+        <div class="file-card">
+
+            <div class="file-name">
+
+                📄 {{ file["filename"] }}
+
+            </div>
+
+
+            <div class="info">
+
+                🕒 Uploaded:
+                {{ file["upload_time"] }}
+
+            </div>
+
+
+            <div class="info">
+
+                🔐 SHA-256 Hash:
+
+            </div>
+
+            <div class="hash">
+
+                {{ file["file_hash"] }}
+
+            </div>
+
+
+            <div class="actions">
+
+                <a class="action verify"
+                   href="/verify/{{ file['id'] }}">
+
+                    🔐 Verify
+
+                </a>
+
+
+                <a class="action history"
+                   href="/history/{{ file['filename'] }}">
+
+                    📚 History
+
+                </a>
+
+
+                <a class="action download"
+                   href="/download/{{ file['filename'] }}">
+
+                    ⬇️ Download
+
+                </a>
+
+
+                <a class="action delete"
+                   href="/delete/{{ file['filename'] }}"
+                   onclick="return confirm('Delete this file?');">
+
+                    🗑️ Delete
+
+                </a>
+
+            </div>
+
+
+            <div class="share-section">
+
+                <h4>🤝 Share File</h4>
+
+                <form class="share-form"
+                      action="/share/{{ file['id'] }}"
+                      method="POST">
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+
+                    <select name="permission">
+
+                        <option value="view">
+                            👀 View Only
+                        </option>
+
+                        <option value="edit">
+                            ✏️ Can Edit
+                        </option>
+
+                    </select>
+
+
+                    <button class="share-btn"
+                            type="submit">
+
+                        🤝 Share
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>📂 No files uploaded yet</h3>
+
+            <p>
+                Upload your first file to start using Cloud Assurance.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

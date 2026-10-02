@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Version History - Cloud Assurance</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        .header {
+            background: #172b4d;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .version {
+            font-size: 20px;
+            font-weight: bold;
+            color: #172b4d;
+        }
+
+        .info {
+            margin-top: 10px;
+        }
+
+        .hash {
+            word-break: break-all;
+            background: #f1f3f5;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        .summary {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff8e1;
+            border-left: 5px solid #ff9800;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 18px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>☁️ Cloud Assurance</h1>
+
+    <div>
+
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/files">Files</a>
+
+        <a href="/logs">Audit Logs</a>
+
+    </div>
+
+</div>
+
+
+
+<div class="container">
+
+    <h2>🕒 Version History</h2>
+
+    <p>
+        Track previous versions, integrity hashes,
+        modification details and file changes.
+    </p>
+
+    <h3>📄 {{ filename }}</h3>
+
+
+    {% for version in versions %}
+
+    <div class="card">
+
+        <div class="version">
+            📚 Version {{ version["version_number"] }}
+        </div>
+
+
+        <div class="info">
+
+            👤 <strong>Modified By:</strong>
+
+            {{ version["modified_by_username"] or "System" }}
+
+        </div>
+
+
+        <div class="info">
+
+            🕒 <strong>Date & Time:</strong>
+
+            {{ version["created_at"] }}
+
+        </div>
+
+
+        <div class="info">
+
+            🔐 <strong>SHA-256 Hash:</strong>
+
+            <div class="hash">
+
+                {{ version["file_hash"] }}
+
+            </div>
+
+        </div>
+
+
+        <div class="info">
+
+            📝 <strong>Change Details:</strong>
+
+            <div class="summary">
+
+                {{ version["change_summary"] or "No changes recorded." }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <p>
+        🔐 Each version is recorded with its SHA-256 hash,
+        modification time, user identity and change details.
+    </p>
+
+
+    <a class="back" href="/files">
+        ← Back to Files
+    </a>
+
+</div>
+
+
+</body>
+</html>

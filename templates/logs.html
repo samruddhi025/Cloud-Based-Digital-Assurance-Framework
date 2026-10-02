@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Cloud Assurance - Audit Logs</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #666;
+        }
+
+        .logs-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        .logs-box h2 {
+            color: #172554;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #172554;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .action {
+            font-weight: bold;
+        }
+
+        .login {
+            color: #2563eb;
+        }
+
+        .upload {
+            color: #15803d;
+        }
+
+        .download {
+            color: #7c3aed;
+        }
+
+        .verify {
+            color: #0891b2;
+        }
+
+        .delete {
+            color: #dc2626;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 15px;
+            border-radius: 8px;
+            color: #1e40af;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            background: #172554;
+            color: white;
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+
+    <div class="navbar">
+
+        <h2>☁️ Cloud Assurance</h2>
+
+        <div>
+
+            <a href="/dashboard">Dashboard</a>
+
+            <a href="/files">Files</a>
+
+            <a href="/logs">Audit Logs</a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main -->
+
+    <div class="container">
+
+        <div class="page-title">
+
+            <h1>📋 Activity & Audit Logs</h1>
+
+            <p>
+                Monitor system activity and file access records.
+            </p>
+
+        </div>
+
+
+        <div class="logs-box">
+
+            <h2>🔐 System Activity</h2>
+
+
+            {% if logs %}
+
+            <table>
+
+                <tr>
+
+                    <th>User</th>
+
+                    <th>Action</th>
+
+                    <th>File</th>
+
+                    <th>Date & Time</th>
+
+                </tr>
+
+
+                {% for log in logs %}
+
+                <tr>
+
+                    <td>
+
+                        👤 {{ log["username"] }}
+
+                    </td>
+
+
+                    <td class="action
+
+                        {% if log['action'] == 'LOGIN' %}
+                            login
+
+                        {% elif log['action'] == 'FILE UPLOAD' %}
+                            upload
+
+                        {% elif log['action'] == 'FILE DOWNLOAD' %}
+                            download
+
+                        {% elif log['action'] == 'FILE VERIFICATION' %}
+                            verify
+
+                        {% elif log['action'] == 'FILE DELETE' %}
+                            delete
+
+                        {% endif %}
+
+                    ">
+
+                        {{ log["action"] }}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if log["filename"] %}
+
+                            📄 {{ log["filename"] }}
+
+                        {% else %}
+
+                            -
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ log["log_time"] }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+
+            <div class="info-box">
+
+                🛡️ <b>Audit Monitoring Active:</b>
+                System activities are being recorded for security monitoring.
+
+            </div>
+
+
+            {% else %}
+
+            <div class="empty">
+
+                <h3>📋 No Activity Recorded</h3>
+
+                <p>System activity will appear here.</p>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        Cloud-Based Digital Assurance Framework
+        <br>
+        Secure File Integrity & Activity Monitoring System
+
+    </footer>
+
+</body>
+
+</html>
